@@ -1,9 +1,12 @@
 import React from 'react'
 
-const userDetails = () => {
+const page = async ({Params}: {Params: Promise <{id: string}>}) => {
+  const {id} = await Params
   return (
-    <div>userDetails</div>
+    <div>
+      <h1>Showing the details of user# {id}</h1>
+    </div>
   )
 }
 
-export default userDetails
+export default page
