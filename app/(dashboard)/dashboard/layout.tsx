@@ -3,9 +3,8 @@ import React from 'react'
 const layout = ({children} : {children : React.ReactNode}) => {
   return (
     <div>
-        Hey its the DashBoard Hearder
+        <p>This is from dashboard</p>
         {children}
-        Hey its the DashBoard footer
     </div>
   )
 }
