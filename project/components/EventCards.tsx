@@ -7,17 +7,34 @@ interface Props {
     slug: string;
     location: string;
     date: string;
-    time:string;
+    time: string;
 }
 
-const EventCards = ({image, title}: Props) => {
-  return (
-    <Link href={'/events'} id="events-cards">
-        <Image src={image} alt="Image" width={410} height={300}  className="poster"/>
+const EventCards = ({ image, title, slug, location, time, date }: Props) => {
+    return (
+        <Link href={`/events/${slug}`} id="events-cards">
+            <Image src={image} alt="Image" width={410} height={300} className="poster" />
 
-        <p className="title">{title}</p>
-    </Link>
-  )
+            <div className="flex flex-row gap-2">
+                <Image src='/icons/pin.svg' alt="location" width={14} height={14} />
+                <p>{location}</p>
+            </div>
+
+            <p className="title">{title}</p>
+
+            <div className="flex gap-2">
+                <div className="flex flex-row gap-2">
+                    <Image src='/icons/calendar.svg' alt="date" width={14} height={14} />
+                    <p>{date}</p>
+                </div>
+
+                <div className="flex flex-row gap-2">
+                    <Image src='/icons/clock.svg' alt="time" width={14} height={14} />
+                    <p>{time}</p>
+                </div>
+            </div>
+        </Link>
+    )
 }
 
 export default EventCards
