@@ -1,8 +1,26 @@
-import React from 'react'
+import ExploreBtn from "@/components/ExploreBtn"
+
+
 
 const page = () => {
   return (
-    <div className='text-9xl'>welcome fuckers</div>
+    <section>
+      <h1 className='text-center'>The hub for every dev <br />Events you Can't miss</h1>
+      <p className='text-center mt-5'>Hacktons, Meetups and conferences, All in One Place</p>
+
+      <ExploreBtn/>
+
+      <div>
+      <h1>Featured Events</h1>
+
+      <ul>
+        {[1,2,3,4,5].map((event) => (
+          <li key={event}>Event {event}</li>
+        ))}
+      </ul>
+        
+      </div>
+    </section>
   )
 }
 
