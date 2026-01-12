@@ -8,17 +8,17 @@ const page = () => {
       <h1 className='text-center'>The hub for every dev <br />Events you Can't miss</h1>
       <p className='text-center mt-5'>Hacktons, Meetups and conferences, All in One Place</p>
 
-      <ExploreBtn/>
+      <ExploreBtn />
 
-      <div>
-      <h1>Featured Events</h1>
+      <div className="mt-20 space-y-7">
+        <h1>Featured Events</h1>
 
-      <ul>
-        {[1,2,3,4,5].map((event) => (
-          <li key={event}>Event {event}</li>
-        ))}
-      </ul>
-        
+        <ul className="events">
+          {[1, 2, 3, 4, 5].map((event) => (
+            <li key={event}>Event {event}</li>
+          ))}
+        </ul>
+
       </div>
     </section>
   )
