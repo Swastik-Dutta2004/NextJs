@@ -1,0 +1,317 @@
+{
+	"info": {
+		"_postman_id": "events-api-collection",
+		"name": "Events API",
+		"description": "API collection for managing events. This collection contains endpoints for creating and managing events in the application.\n\n## Base URL\n`{{baseUrl}}/api/events`\n\n## Authentication\nNo authentication required for these endpoints.\n\n## Event Model\nEvents contain the following fields:\n- **title** (required): Event title\n- **description** (required): Event description\n- **overview** (required): Event overview\n- **image** (required): Event image URL\n- **venue** (required): Event venue name\n- **location** (required): Event location\n- **date** (required): Event date in YYYY-MM-DD format\n- **time** (required): Event time in HH:MM format (24-hour)\n- **mode** (required): Event mode (e.g., online, offline, hybrid)\n- **audience** (required): Target audience\n- **agenda** (required): Array of agenda items\n- **organizer** (required): Event organizer name\n- **tags** (required): Array of tags",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Events",
+			"description": "Endpoints for managing events",
+			"item": [
+				{
+					"name": "Create Event",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Tech Conference 2025",
+									"description": "Event title (required)",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Annual technology conference featuring the latest innovations",
+									"description": "Event description (required)",
+									"type": "text"
+								},
+								{
+									"key": "overview",
+									"value": "Join us for an exciting day of tech talks, workshops, and networking opportunities with industry leaders.",
+									"description": "Event overview (required)",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"value": "https://example.com/images/tech-conference.jpg",
+									"description": "Event image URL (required)",
+									"type": "text"
+								},
+								{
+									"key": "venue",
+									"value": "Convention Center",
+									"description": "Event venue name (required)",
+									"type": "text"
+								},
+								{
+									"key": "location",
+									"value": "New York, NY",
+									"description": "Event location (required)",
+									"type": "text"
+								},
+								{
+									"key": "date",
+									"value": "2025-06-15",
+									"description": "Event date in YYYY-MM-DD format (required)",
+									"type": "text"
+								},
+								{
+									"key": "time",
+									"value": "09:00",
+									"description": "Event time in HH:MM format - 24 hour (required)",
+									"type": "text"
+								},
+								{
+									"key": "mode",
+									"value": "hybrid",
+									"description": "Event mode: online, offline, or hybrid (required)",
+									"type": "text"
+								},
+								{
+									"key": "audience",
+									"value": "Software Developers and Tech Enthusiasts",
+									"description": "Target audience (required)",
+									"type": "text"
+								},
+								{
+									"key": "agenda",
+									"value": "Opening Keynote",
+									"description": "Agenda item (required, at least one)",
+									"type": "text"
+								},
+								{
+									"key": "agenda",
+									"value": "Workshop: Building Scalable APIs",
+									"description": "Agenda item",
+									"type": "text"
+								},
+								{
+									"key": "agenda",
+									"value": "Networking Lunch",
+									"description": "Agenda item",
+									"type": "text"
+								},
+								{
+									"key": "organizer",
+									"value": "Tech Events Inc.",
+									"description": "Event organizer name (required)",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "technology",
+									"description": "Tag (required, at least one)",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "conference",
+									"description": "Tag",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "networking",
+									"description": "Tag",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/events",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"events"
+							]
+						},
+						"description": "Create a new event.\n\n**Content-Type**: multipart/form-data\n\n**Request Body Fields:**\n| Field | Type | Required | Description |\n|-------|------|----------|-------------|\n| title | string | Yes | Event title |\n| description | string | Yes | Event description |\n| overview | string | Yes | Event overview |\n| image | string | Yes | Event image URL |\n| venue | string | Yes | Event venue name |\n| location | string | Yes | Event location |\n| date | string | Yes | Date in YYYY-MM-DD format |\n| time | string | Yes | Time in HH:MM format (24-hour) |\n| mode | string | Yes | Event mode (online/offline/hybrid) |\n| audience | string | Yes | Target audience |\n| agenda | string[] | Yes | Array of agenda items (at least one) |\n| organizer | string | Yes | Event organizer name |\n| tags | string[] | Yes | Array of tags (at least one) |\n\n**Response Codes:**\n- `201 Created`: Event created successfully\n- `400 Bad Request`: Invalid JSON format\n- `500 Internal Server Error`: Event creation failed\n\n**Success Response Example:**\n```json\n{\n  \"message\": \"Events create successfully\",\n  \"event\": {\n    \"_id\": \"...\",\n    \"title\": \"Tech Conference 2025\",\n    \"slug\": \"tech-conference-2025\",\n    \"description\": \"...\",\n    \"createdAt\": \"...\",\n    \"updatedAt\": \"...\"\n  }\n}\n```\n\n**Error Response Example:**\n```json\n{\n  \"message\": \"Event creation failed\",\n  \"error\": \"Error message\"\n}\n```"
+					},
+					"response": [
+						{
+							"name": "Event Created Successfully",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Tech Conference 2025",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Annual technology conference",
+											"type": "text"
+										},
+										{
+											"key": "overview",
+											"value": "Join us for an exciting day of tech talks",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"value": "https://example.com/image.jpg",
+											"type": "text"
+										},
+										{
+											"key": "venue",
+											"value": "Convention Center",
+											"type": "text"
+										},
+										{
+											"key": "location",
+											"value": "New York, NY",
+											"type": "text"
+										},
+										{
+											"key": "date",
+											"value": "2025-06-15",
+											"type": "text"
+										},
+										{
+											"key": "time",
+											"value": "09:00",
+											"type": "text"
+										},
+										{
+											"key": "mode",
+											"value": "hybrid",
+											"type": "text"
+										},
+										{
+											"key": "audience",
+											"value": "Developers",
+											"type": "text"
+										},
+										{
+											"key": "agenda",
+											"value": "Opening Keynote",
+											"type": "text"
+										},
+										{
+											"key": "organizer",
+											"value": "Tech Events Inc.",
+											"type": "text"
+										},
+										{
+											"key": "tags",
+											"value": "technology",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/events",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"events"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"body": "{\n  \"message\": \"Events create successfully\",\n  \"event\": {\n    \"_id\": \"507f1f77bcf86cd799439011\",\n    \"title\": \"Tech Conference 2025\",\n    \"slug\": \"tech-conference-2025\",\n    \"description\": \"Annual technology conference\",\n    \"overview\": \"Join us for an exciting day of tech talks\",\n    \"image\": \"https://example.com/image.jpg\",\n    \"venue\": \"Convention Center\",\n    \"location\": \"New York, NY\",\n    \"date\": \"2025-06-15\",\n    \"time\": \"09:00\",\n    \"mode\": \"hybrid\",\n    \"audience\": \"Developers\",\n    \"agenda\": [\"Opening Keynote\"],\n    \"organizer\": \"Tech Events Inc.\",\n    \"tags\": [\"technology\"],\n    \"createdAt\": \"2025-01-18T12:00:00.000Z\",\n    \"updatedAt\": \"2025-01-18T12:00:00.000Z\"\n  }\n}"
+						},
+						{
+							"name": "Invalid Request Format",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "invalid json"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/events",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"events"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"body": "{\n  \"message\": \"Invaild JSON format\"\n}"
+						},
+						{
+							"name": "Server Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Test Event",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/events",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"events"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"body": "{\n  \"message\": \"Event creation falied\",\n  \"error\": \"Validation failed: description is required\"\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string",
+			"description": "Base URL for the API. Change this to your deployment URL in production."
+		}
+	]
+}

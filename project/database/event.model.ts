@@ -103,7 +103,7 @@ const eventSchema = new Schema<IEvent>(
 );
 
 // Index for faster slug-based queries
-eventSc hema.index({ slug: 1 });
+eventSchema.index({ slug: 1 });
 
 /**
  * Pre-save hook to auto-generate slug from title and normalize date/time

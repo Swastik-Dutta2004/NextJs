@@ -1,9 +1,8 @@
 import connectDB from "@/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import Event from "@/database/event.model"
-import { events } from "@/lib/constant";
 
-export async function PUT(req: NextRequest) {
+export async function POST(req: NextRequest) {
     try {
         await connectDB();
 
@@ -12,11 +11,12 @@ export async function PUT(req: NextRequest) {
         let event;
         try {
             event = Object.fromEntries(fordata.entries())
-        } catch (error) {
+        } catch (e) {
             return NextResponse.json({message: "Invaild JSON format"}, {status: 400})
         }
 
-        const createEvents = await Event.create(events);
+        const createEvents = await Event.create(event);
+        
         return NextResponse.json({message: "Events create successfully", event: createEvents}, {status: 201})
 
     } catch (e) {
