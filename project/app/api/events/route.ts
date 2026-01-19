@@ -1,10 +1,10 @@
-import connectDB from "@/lib/mongodb";
+// import connectDB from "@/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import Event from "@/database/event.model"
 
 export async function POST(req: NextRequest) {
     try {
-        await connectDB();
+        // await connectDB();
 
         const fordata = await req.formData();
 
