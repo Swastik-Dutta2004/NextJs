@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Event from "@/database/event.model"
 import { promises } from "dns";
 import {v2 as cloudinary} from 'cloudinary'
+import { error } from "console";
 
 export async function POST(req: NextRequest) {
     try {
@@ -19,21 +20,6 @@ export async function POST(req: NextRequest) {
         } catch (e) {
             return NextResponse.json({message: "Invalid JSON format"}, {status: 400})
         }
-
-        const file = fordata.get('image') as File;
-        if (!file) {
-            return NextResponse.json({message: "Iamge file is required"},{status: 400})
-
-            const ArrayBuffer = await file.arrayBuffer();
-            const buffer = Buffer.from(ArrayBuffer)
-
-            const uplodeFile = await new Promise((resolve, reject) => {
-                
-            })
-        }
-
-
-
 
         const createEvents = await Event.create(event);
         
