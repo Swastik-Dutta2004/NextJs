@@ -111,7 +111,7 @@ eventSchema.index({ slug: 1 });
  * - Normalizes date to ISO format (YYYY-MM-DD)
  * - Ensures time is stored consistently (HH:MM format)
  */
-eventSchema.pre('save', async function (next) {
+eventSchema.pre('save', async function () {
   // Generate slug only if title is new or modified
   if (this.isModified('title')) {
     this.slug = this.title
@@ -135,26 +135,20 @@ eventSchema.pre('save', async function (next) {
 
   // Normalize date to ISO format (YYYY-MM-DD)
   if (this.isModified('date')) {
-    try {
-      const parsedDate = new Date(this.date);
-      if (isNaN(parsedDate.getTime())) {
-        throw new Error('Invalid date format');
-      }
-      this.date = parsedDate.toISOString().split('T')[0];
-    } catch (error) {
-      return next(new Error('Date must be a valid date string'));
+    const parsedDate = new Date(this.date);
+    if (isNaN(parsedDate.getTime())) {
+      throw new Error('Date must be a valid date string');
     }
+    this.date = parsedDate.toISOString().split('T')[0];
   }
 
   // Normalize time to HH:MM format
   if (this.isModified('time')) {
     const timeRegex = /^([0-1]?[0-9]|2[0-3]):([0-5][0-9])$/;
     if (!timeRegex.test(this.time)) {
-      return next(new Error('Time must be in HH:MM format (24-hour)'));
+      throw new Error('Time must be in HH:MM format (24-hour)');
     }
   }
-
-  next();
 });
 
 // Prevent model recompilation in development (Next.js hot reload)
