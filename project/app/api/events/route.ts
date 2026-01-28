@@ -21,18 +21,16 @@ export async function POST(req: NextRequest) {
         
         formData.forEach((value, key) => {
             if (key !== 'image') {
-                // Map 'organize' to 'organizer' for the database
-                const dbKey = key === 'organize' ? 'organizer' : key;
                 
                 // Handle arrays (like tags)
                 if (key === 'tags') {
                     try {
-                        eventData[dbKey] = JSON.parse(value as string);
+                        eventData[key] = JSON.parse(value as string);
                     } catch {
-                        eventData[dbKey] = value as string;
+                        eventData[key] = value as string;
                     }
                 } else {
-                    eventData[dbKey] = value as string;
+                    eventData[key] = value as string;
                 }
             }
         });
@@ -40,7 +38,6 @@ export async function POST(req: NextRequest) {
         // Upload image to Cloudinary
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
-
         const uploadedFile = await new Promise((resolve, reject) => {
             cloudinary.uploader.upload_stream(
                 {resource_type: 'image', folder: 'DevEvent'}, 
