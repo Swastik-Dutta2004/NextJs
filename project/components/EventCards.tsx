@@ -2,15 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface Props {
-    image: string;
-    title: string;
-    slug: string;
-    location: string;
-    date: string;
-    time: string;
+  image: string;
+  title: string;
+  slug: string;
+  location: string;
+  date: string;
+  time: string;
 }
 
 const EventCards = ({ image, title, slug, location, time, date }: Props) => {
+
     return (
 
         <Link
@@ -54,5 +55,15 @@ const EventCards = ({ image, title, slug, location, time, date }: Props) => {
 
     )
 }
+            <div className="flex items-center gap-1">
+              <Image src="/icons/clock.svg" alt="time" width={12} height={12} />
+              <span>{time}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+};
 
-export default EventCards
+export default EventCards;
