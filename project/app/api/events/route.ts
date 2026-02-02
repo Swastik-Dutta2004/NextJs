@@ -80,4 +80,4 @@ export async function GET(req: NextRequest) {
     } catch (e) {
         return NextResponse.json({message: "Events fetching failed", error: e},{status:500})
     }
-}
+} 
