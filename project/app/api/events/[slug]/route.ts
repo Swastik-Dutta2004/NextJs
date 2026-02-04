@@ -12,16 +12,22 @@ import mongoose from "mongoose";
  * @param params - Route parameters containing the slug
  * @returns JSON response with event data or error message
  */
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  context: { params :Promise <{ slug: string }> }
 ): Promise<NextResponse> {
+
+  console.log("PARAMS OBJECT 👉", context.params);
+
   try {
     // Establish database connection
     await connectDB();
 
     // Extract and validate slug parameter
-    const { slug } = params;
+    const { slug } = await context.params;
+    console.log("SLUG 👉", slug);
+    
 
     // Validate slug is provided
     if (!slug) {
