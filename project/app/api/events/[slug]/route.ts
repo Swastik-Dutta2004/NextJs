@@ -47,7 +47,7 @@ export async function GET(
     }
 
     // Query event by slug
-    const event: IEvent | null = await Event.findOne({ 
+    const event = await Event.findOne({ 
       slug: slug.trim().toLowerCase() 
     }).lean<IEvent>();
 
