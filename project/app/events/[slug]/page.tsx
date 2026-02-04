@@ -1,8 +1,17 @@
 import React from 'react'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-const page = () => {
+
+const page = async({params}:{params: Promise <{slug: string}>}) => {
+    const {slug} = await params;
+    const request = await fetch(`${BASE_URL}/api/events/${slug}`)
+    const {data} = await request.json();
+
+
   return (
-    <div>page</div>
+    <section>
+        <h1>Events Details: {slug}</h1>
+    </section>
   )
 }
 
