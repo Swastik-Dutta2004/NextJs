@@ -10,7 +10,7 @@ const page = async({params}:{params: Promise <{slug: string}>}) => {
 
   return (
     <section>
-        <h1>Events Details: {slug}</h1>
+        <h1>Events Details: <br />{slug}</h1>
     </section>
   )
 }
