@@ -18,7 +18,6 @@ export async function GET(
   context: { params :Promise <{ slug: string }> }
 ): Promise<NextResponse> {
 
-  console.log("PARAMS OBJECT 👉", context.params);
 
   try {
     // Establish database connection
