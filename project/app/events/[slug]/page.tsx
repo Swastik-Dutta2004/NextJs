@@ -1,21 +1,55 @@
+import BookEvent from '@/components/BookEvent';
+import { Booking } from '@/database';
 import { events } from '@/lib/constant';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { json } from 'stream/consumers';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-const EventDetails = ({icon, alt, lable}: {icon: string; alt: string; lable: string}) => (
-  <div>
-    <Image src={icon} alt={alt} width={20} height={20} className='flex items-center gap-2'/>
-    <p>{lable}</p>
+const EventAgenda = ({ AgendaItems }: { AgendaItems: string[] }) => {
+  return (
+    <div>
+      <h2>Agenda</h2>
+      <ul>
+        {AgendaItems.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
+const EventDetails = ({ icon, alt, lable, }: { icon: string; alt: string; lable: string; }) => (
+  <div className="flex items-center gap-3">
+    <Image
+      src={icon}
+      alt={alt}
+      width={20}
+      height={20}
+      className="shrink-0"
+    />
+    <p className="leading-none">{lable}</p>
+  </div>
+);
+
+const EventTags = ({ tagsItems }: { tagsItems: string[] }) => (
+  <div className='flex flex-row gap-3 flex-wrap'>
+    {tagsItems.map((tag) => (
+      <div className='pill' key={tag}>{tag}</div>
+    ))}
   </div>
 )
+
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
   const request = await fetch(`${BASE_URL}/api/events/${slug}`)
   const { event: { description, image, time, date, overview, location, agenda, mode, audience, organizer, tags } } = await request.json();
 
   if (!description) return notFound();
+
+  const booking = 10;
+
   return (
     <section id='event'>
       <div className="header">
@@ -25,28 +59,47 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
 
       <div className="details">
         <div className="content">
-          <Image src={image} alt='Image Tag' width={800} height={800} className='Banner'/>
+          <Image src={image} alt='Image Tag' width={800} height={800} className='Banner' />
 
           <section className='flex-col gap-2'>
             <h2>Overview</h2>
             <p>{overview}</p>
           </section>
 
-          <section className='flex-col gap-2'>
-            <h2>Event Details</h2>
+          <section className="flex-col gap-3">
+            <h2 className="font-semibold">Event Details</h2>
 
-            <EventDetails icon= "/icons/calendar.svg" alt='calender' lable= {date}/>
-            <EventDetails icon= "/icons/clock.svg" alt='clock' lable= {time}/>
-            <EventDetails icon= "/icons/audience.svg" alt='audience' lable= {mode}/>
-            <EventDetails icon= "/icons/mode.svg" alt='mode' lable= {mode}/>
+            <EventDetails icon="/icons/calendar.svg" alt="calendar" lable={date} />
+            <EventDetails icon="/icons/clock.svg" alt="clock" lable={time} />
+            <EventDetails icon="/icons/audience.svg" alt="audience" lable={audience} />
+            <EventDetails icon="/icons/mode.svg" alt="mode" lable={mode} />
+            <EventDetails icon="/icons/pin.svg" alt="locatoin" lable={location} />
           </section>
+
+          <EventAgenda AgendaItems={JSON.parse(agenda[0])} />
+
+          <section className="flex-col gap-2">
+            <h2>About the Organizer</h2>
+            <p>{organizer}</p>
+          </section>
+
+          <EventTags tagsItems={tags} />
+
         </div>
-        
 
-       
+        <aside className='booking'>
+          <div className='signup-card'>
+            <h2>Book Your Spot</h2>
+            {booking > 0 ? (
+              <p className='text-sm'>
+                Join {booking} people who have already booked there spot!
+              </p>
+            ):(
+              <p className='text-sm'>Be the first to book the spot!</p>
+            )}
 
-        <aside>
-          <p className='text-lg font-semibold'>Event Book</p>
+            <BookEvent/>
+          </div>
         </aside>
       </div>
     </section>
