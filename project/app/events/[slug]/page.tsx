@@ -1,5 +1,6 @@
 import BookEvent from '@/components/BookEvent';
-import { Booking } from '@/database';
+import { Booking, IEvent } from '@/database';
+import { getSimilarEventbySlug } from '@/lib/actions/events.actions';
 import { events } from '@/lib/constant';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -49,6 +50,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   if (!description) return notFound();
 
   const booking = 10;
+  const similarEvents: IEvent[] = await getSimilarEventbySlug(slug);
 
   return (
     <section id='event'>
@@ -98,7 +100,7 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
               <p className='text-sm'>Be the first to book the spot!</p>
             )}
 
-            <BookEvent/>
+          <BookEvent/>
           </div>
         </aside>
       </div>
