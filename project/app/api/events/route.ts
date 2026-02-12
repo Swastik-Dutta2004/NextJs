@@ -1,8 +1,9 @@
 import connectDB from "@/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import Event from "@/database/event.model"
-import {v2 as cloudinary} from 'cloudinary'
+import { v2 as cloudinary } from 'cloudinary'
 import { error } from "console";
+import { Tags } from "lucide-react";
 
 export async function POST(req: NextRequest) {
     try {
@@ -14,21 +15,19 @@ export async function POST(req: NextRequest) {
         const file = formData.get('image') as File;
 
         if (!file) {
-            return NextResponse.json({message: "Image is required"}, {status: 400})
+            return NextResponse.json({ message: "Image is required" }, { status: 400 })
         }
 
         // Convert FormData to a plain object (excluding the file)
         const eventData: { [key: string]: string | string[] } = {};
-        
+
         formData.forEach((value, key) => {
             if (key !== 'image') {
-                
-                // Handle arrays (like tags)
-                if (key === 'tags') {
+                if (key === 'tags' || key === 'agenda') {
                     try {
                         eventData[key] = JSON.parse(value as string);
                     } catch {
-                        eventData[key] = value as string;
+                        eventData[key] = [];
                     }
                 } else {
                     eventData[key] = value as string;
@@ -36,12 +35,13 @@ export async function POST(req: NextRequest) {
             }
         });
 
+
         // Upload image to Cloudinary
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
         const uploadedFile = await new Promise((resolve, reject) => {
             cloudinary.uploader.upload_stream(
-                {resource_type: 'image', folder: 'DevEvent'}, 
+                { resource_type: 'image', folder: 'DevEvent' },
                 (error, result) => {
                     if (error) return reject(error);
                     resolve(result);
@@ -50,22 +50,23 @@ export async function POST(req: NextRequest) {
         });
 
         // Add the uploaded image URL to event data
-        eventData.image = (uploadedFile as {secure_url: string}).secure_url;
+        eventData.image = (uploadedFile as { secure_url: string }).secure_url;
 
         // Create the event in the database
         const createdEvent = await Event.create(eventData);
-        
+
+
         return NextResponse.json({
-            message: "Event created successfully", 
+            message: "Event created successfully",
             event: createdEvent
-        }, {status: 201});
+        }, { status: 201 });
 
     } catch (e) {
         console.error(e);
         return NextResponse.json({
-            message: "Event creation failed", 
+            message: "Event creation failed",
             error: e instanceof Error ? e.message : "Unknown"
-        }, {status: 500});
+        }, { status: 500 });
     }
 }
 
@@ -73,11 +74,11 @@ export async function GET(req: NextRequest) {
     try {
         await connectDB();
 
-        const events = await Event.find().sort({createdAt: -1})
+        const events = await Event.find().sort({ createdAt: -1 })
 
-        return NextResponse.json({message: "Events fetched Successfully", events}, {status:200})
+        return NextResponse.json({ message: "Events fetched Successfully", events }, { status: 200 })
 
     } catch (e) {
-        return NextResponse.json({message: "Events fetching failed", error: e},{status:500})
+        return NextResponse.json({ message: "Events fetching failed", error: e }, { status: 500 })
     }
 } 
