@@ -1,10 +1,10 @@
 import BookEvent from '@/components/BookEvent';
+import EventCards from '@/components/EventCards';
 import { Booking, IEvent } from '@/database';
 import { getSimilarEventbySlug } from '@/lib/actions/events.actions';
 import { events } from '@/lib/constant';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { json } from 'stream/consumers';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -103,6 +103,13 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
           <BookEvent/>
           </div>
         </aside>
+      </div>
+
+      <div className='flex flex-col w-full gap-4 mt-20'>
+        <h2>Similar Events: </h2>
+        <div>{similarEvents.length > 0 && similarEvents.map((similarEvents: IEvent) => (
+          <EventCards key={String(similarEvents._id)} {...similarEvents}/>
+        ))}</div>
       </div>
     </section>
   )
