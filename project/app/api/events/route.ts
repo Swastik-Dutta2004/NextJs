@@ -8,7 +8,6 @@ export async function POST(req: NextRequest) {
         await connectDB();
 
         const formData = await req.formData();
-
         // Extract the file first
         const file = formData.get('image') as File;
 

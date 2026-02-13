@@ -11,7 +11,7 @@ const {events} = await response.json()
 
   return (
     <section>
-      <h1 className='text-center'>The hub for every dev <br />Events you Can't miss</h1>
+      <h1 className='text-center font-bold tracking-tight'>The hub for every dev <br />Events you Can't miss</h1>
       <p className='text-center mt-5'>Hacktons, Meetups and conferences, All in One Place</p>
 
       <ExploreBtn />
@@ -21,9 +21,9 @@ const {events} = await response.json()
 
         <ul className="events">
           {events && events.length > 0 && events.map((event: IEvent) => (
-            <li key={event._id} className="list-none">
+            <span key={event._id} className="list-none">
               <EventCards {...event} />
-            </li>
+            </span>
           ))}
         </ul>
 

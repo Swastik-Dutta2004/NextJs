@@ -1,18 +1,8 @@
 import type { Metadata } from "next";
-import { Schibsted_Grotesk, Martian_Mono } from "next/font/google";
 import "./globals.css";
 import LightRays from "@/components/Lightrays";
 import Navbar from "./Navbar";
-
-const SchibstedGrotesk = Schibsted_Grotesk({
-  variable: "--font-schibsted_grotesk",
-  subsets: ["latin"],
-});
-
-const MartianMono = Martian_Mono({
-  variable: "--font-martian_-mono",
-  subsets: ["latin"],
-});
+import {GeistPixelSquare} from 'geist/font/pixel'
 
 export const metadata: Metadata = {
   title: "DevEvents",
@@ -27,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${SchibstedGrotesk.variable} ${MartianMono.variable} min-h-screen antialiased`}
+        className={`${GeistPixelSquare.className} min-h-screen antialiased`}
       >
 
       <Navbar/>

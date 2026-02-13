@@ -12,6 +12,7 @@
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.9.0",
     "clsx": "^2.1.1",
+    "geist": "^1.7.0",
     "lucide-react": "^0.562.0",
     "mongoos": "^0.0.1-security",
     "mongoose": "^9.1.4",
