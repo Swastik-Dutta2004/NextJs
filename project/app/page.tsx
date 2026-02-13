@@ -21,7 +21,9 @@ const {events} = await response.json()
 
         <ul className="events">
           {events && events.length > 0 && events.map((event: IEvent) => (
-            <li key={event._id}><EventCards {...event} /></li>
+            <li key={event._id} className="list-none">
+              <EventCards {...event} />
+            </li>
           ))}
         </ul>
 

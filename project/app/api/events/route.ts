@@ -2,8 +2,6 @@ import connectDB from "@/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import Event from "@/database/event.model"
 import { v2 as cloudinary } from 'cloudinary'
-import { error } from "console";
-import { Tags } from "lucide-react";
 
 export async function POST(req: NextRequest) {
     try {
@@ -18,23 +16,43 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: "Image is required" }, { status: 400 })
         }
 
-        // Convert FormData to a plain object (excluding the file)
+        // Convert FormData to a plain object
         const eventData: { [key: string]: string | string[] } = {};
 
         formData.forEach((value, key) => {
-            if (key !== 'image') {
-                if (key === 'tags' || key === 'agenda') {
-                    try {
-                        eventData[key] = JSON.parse(value as string);
-                    } catch {
-                        eventData[key] = [];
+            // Skip the image file itself
+            if (key === 'image') return;
+
+            if (key === 'tags' || key === 'agenda') {
+                const rawValue = value as string;
+
+                try {
+                    const parsed = JSON.parse(rawValue);
+
+                    // If valid JSON array
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        eventData[key] = parsed;
+                    } else {
+                        throw new Error("Empty array");
                     }
-                } else {
-                    eventData[key] = value as string;
+
+                } catch {
+                    // Fallback: split by comma (for multipart form safety)
+                    const splitValues = rawValue
+                        .split(',')
+                        .map(item => item.trim())
+                        .filter(item => item.length > 0);
+
+                    eventData[key] = splitValues;
                 }
+            } else {
+                // Add all other fields and clean them
+                let cleanValue = (value as string).trim();
+                // Remove trailing periods, commas, quotes, and other punctuation
+                cleanValue = cleanValue.replace(/[.,;'"]+$/g, '');
+                eventData[key] = cleanValue;
             }
         });
-
 
         // Upload image to Cloudinary
         const arrayBuffer = await file.arrayBuffer();
@@ -55,14 +73,13 @@ export async function POST(req: NextRequest) {
         // Create the event in the database
         const createdEvent = await Event.create(eventData);
 
-
         return NextResponse.json({
             message: "Event created successfully",
             event: createdEvent
         }, { status: 201 });
 
     } catch (e) {
-        console.error(e);
+        console.error("Full error:", e);
         return NextResponse.json({
             message: "Event creation failed",
             error: e instanceof Error ? e.message : "Unknown"
@@ -81,4 +98,4 @@ export async function GET(req: NextRequest) {
     } catch (e) {
         return NextResponse.json({ message: "Events fetching failed", error: e }, { status: 500 })
     }
-} 
+}

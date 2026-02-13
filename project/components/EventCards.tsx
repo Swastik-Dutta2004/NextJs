@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface Props {
-  image ?: string;
+  image?: string;
   title: string;
   slug: string;
   location: string;
@@ -18,12 +18,18 @@ const EventCards = ({ image, title, slug, location, time, date }: Props) => {
     >
       {/* Image */}
       <div className="relative h-[260px] w-full overflow-hidden">
-        <Image
-          src={image}
-          alt="Event Image"
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
+        {image ? (
+          <Image
+            src={image}
+            alt="Event Image"
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="h-full w-full bg-gray-800 flex items-center justify-center">
+            <span className="text-gray-400">No Image Available</span>
+          </div>
+        )}
 
         {/* Overlay */}
         <div className="absolute inset-0 bg-black/30 transition-opacity duration-300 group-hover:bg-black/40" />
