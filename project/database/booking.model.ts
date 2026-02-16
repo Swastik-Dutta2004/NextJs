@@ -1,6 +1,5 @@
 import mongoose, { Document, Model, Schema } from 'mongoose';
 
-// TypeScript interface for Booking document
 export interface IBooking extends Document {
   eventId: mongoose.Types.ObjectId;
   email: string;
@@ -22,11 +21,10 @@ const bookingSchema = new Schema<IBooking>(
       lowercase: true,
       validate: {
         validator: (v: string) => {
-          // RFC 5322 compliant email validation
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
           return emailRegex.test(v);
         },
-        message: 'Please provide a valid email address',
+        message: 'Please provide a valid email address (e.g., user@example.com)',
       },
     },
   },
@@ -35,34 +33,24 @@ const bookingSchema = new Schema<IBooking>(
   }
 );
 
-// Index on eventId for faster queries
 bookingSchema.index({ eventId: 1 });
 
 /**
  * Pre-save hook to validate that the referenced event exists
- * - Ensures data integrity by checking event existence before saving
- * - Prevents orphaned bookings
  */
-bookingSchema.pre('save', async function (next) {
+bookingSchema.pre('save', async function () {
   // Only validate eventId if it's new or modified
   if (this.isModified('eventId')) {
-    try {
-      const Event = mongoose.models.Event || (await import('./event.model')).default;
-      
-      const eventExists = await Event.findById(this.eventId);
-      
-      if (!eventExists) {
-        return next(new Error('Referenced event does not exist'));
-      }
-    } catch (error) {
-      return next(new Error('Error validating event reference'));
+    const Event = mongoose.models.Event || (await import('./event.model')).default;
+    
+    const eventExists = await Event.findById(this.eventId);
+    
+    if (!eventExists) {
+      throw new Error('Referenced event does not exist');
     }
   }
-
-  next();
 });
 
-// Prevent model recompilation in development (Next.js hot reload)
 const Booking: Model<IBooking> =
   mongoose.models.Booking || mongoose.model<IBooking>('Booking', bookingSchema);
 

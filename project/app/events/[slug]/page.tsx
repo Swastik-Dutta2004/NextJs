@@ -1,13 +1,14 @@
+
 import BookEvent from '@/components/BookEvent';
 import EventCards from '@/components/EventCards';
-import { Booking, IEvent } from '@/database';
+import { IEvent } from '@/database';
 import { getSimilarEventbySlug } from '@/lib/actions/events.actions';
-import { events } from '@/lib/constant';
+import { cacheLife } from 'next/cache';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 const EventAgenda = ({ AgendaItems }: { AgendaItems: string[] }) => {
   return (
     <div>
@@ -22,6 +23,7 @@ const EventAgenda = ({ AgendaItems }: { AgendaItems: string[] }) => {
 }
 
 const EventDetails = ({ icon, alt, lable, }: { icon: string; alt: string; lable: string; }) => (
+
   <div className="flex items-center gap-3">
     <Image
       src={icon}
@@ -45,9 +47,11 @@ const EventTags = ({ tagsItems }: { tagsItems: string[] }) => (
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
   const request = await fetch(`${BASE_URL}/api/events/${slug}`)
-  const { event: { description, image, time, date, overview, location, agenda, mode, audience, organizer, tags } } = await request.json();
+  const { event } = await request.json();
 
-  if (!description) return notFound();
+  if (!event?.description) return notFound();
+
+  const { description, image, time, date, overview, location, agenda, mode, audience, organizer, tags } = event;
 
   const booking = 10;
   const similarEvents: IEvent[] = await getSimilarEventbySlug(slug);
@@ -96,11 +100,12 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
               <p className='text-sm'>
                 Join {booking} people who have already booked there spot!
               </p>
-            ):(
+            ) : (
               <p className='text-sm'>Be the first to book the spot!</p>
             )}
 
-          <BookEvent/>
+            <BookEvent eventId={event._id} />
+
           </div>
         </aside>
       </div>
@@ -109,8 +114,8 @@ const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
         <h2>Similar Events: </h2>
         <div className='events'>
           {similarEvents.length > 0 && similarEvents.map((similarEvents: IEvent) => (
-          <EventCards key={String(similarEvents._id)} {...similarEvents}/>
-        ))}
+            <EventCards key={String(similarEvents._id)} {...similarEvents} />
+          ))}
         </div>
       </div>
     </section>

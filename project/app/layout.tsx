@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import LightRays from "@/components/Lightrays";
 import Navbar from "./Navbar";
-import Providers from'./providers'
+import Providers from './providers'
+import { Schibsted_Grotesk, Martian_Mono } from "next/font/google";
+import { Suspense } from "react";
 
 const SchibstedGrotesk = Schibsted_Grotesk({
   variable: "--font-schibsted_grotesk",
@@ -27,29 +29,30 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${GeistPixelSquare.className} min-h-screen antialiased`}
+        className={`${SchibstedGrotesk.variable} ${MartianMono.variable} min-h-screen antialiased`}
       >
-       <Providers>
-          <Navbar />
+        <Suspense fallback={null}>
+          <Providers>
+            <Navbar />
 
-          <div className="absolute inset-0 top-0 z-[-1] min-h-screen">
-            <LightRays
-              raysOrigin="top-center-offset"
-              raysColor="#5dfeca"
-              raysSpeed={0.5}
-              lightSpread={0.8}
-              rayLength={1.4}
-              followMouse={true}
-              mouseInfluence={0.02}
-              noiseAmount={0.0}
-              distortion={0.01}
-              className="custom-rays"
-            />
-          </div>
+            <div className="absolute inset-0 top-0 z-[-1] min-h-screen">
+              <LightRays
+                raysOrigin="top-center-offset"
+                raysColor="#5dfeca"
+                raysSpeed={0.5}
+                lightSpread={0.8}
+                rayLength={1.4}
+                followMouse={true}
+                mouseInfluence={0.02}
+                noiseAmount={0.0}
+                distortion={0.01}
+                className="custom-rays"
+              />
+            </div>
 
-          
-          <main>{children}</main>
-        </Providers>
+            <main>{children}</main>
+          </Providers>
+        </Suspense>
       </body>
     </html>
   );
