@@ -46,7 +46,7 @@ const EventTags = ({ tagsItems }: { tagsItems: string[] }) => (
 
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
-  const request = await fetch(`${BASE_URL}/api/events/${slug}`)
+  const request = await fetch('/api/events')
   const { event } = await request.json();
 
   if (!event?.description) return notFound();
