@@ -3,7 +3,7 @@ import BookEvent from '@/components/BookEvent';
 import EventCards from '@/components/EventCards';
 import { IEvent } from '@/database';
 import { getSimilarEventbySlug } from '@/lib/actions/events.actions';
-import { cacheLife } from 'next/cache';
+import { getBaseUrl } from '@/lib/getBaseUrl'
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
@@ -46,7 +46,7 @@ const EventTags = ({ tagsItems }: { tagsItems: string[] }) => (
 
 const page = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
-  const request = await fetch('/api/events')
+  const request = await fetch(`${getBaseUrl()}/api/events`)
   const { event } = await request.json();
 
   if (!event?.description) return notFound();
